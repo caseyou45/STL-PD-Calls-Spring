@@ -15,4 +15,11 @@ public interface CallRepository extends JpaRepository<Call, Long> {
 
     List<Call> findByDatetimeAfterOrderByDatetimeDesc(LocalDateTime daysAgo);
 
+    List<Call> findByLocationAndDatetimeAfterOrderByDatetimeDesc(String location, LocalDateTime daysAgo);
+
+    List<Call> findByTypeAndDatetimeAfterOrderByDatetimeDesc(String type, LocalDateTime daysAgo);
+
+    List<Call> findByLocationAndTypeAndDatetimeAfterOrderByDatetimeDesc(String locaiton, String type,
+            LocalDateTime daysAgo);
+
 }

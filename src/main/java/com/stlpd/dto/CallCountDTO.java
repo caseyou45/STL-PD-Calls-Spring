@@ -5,13 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import com.stlpd.model.Call;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class CallCountDTO {
     private Long callId;
     private LocalDateTime callDatetime;
@@ -19,8 +19,8 @@ public class CallCountDTO {
     private String callType;
     private Long countId;
     private LocalDateTime countDatetime;
-    private String countLocation;
-    private String countType;
+    private Integer countLocation;
+    private Integer countType;
     private String displayDateTime;
     private Integer countValue;
 

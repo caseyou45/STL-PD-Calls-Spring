@@ -18,6 +18,10 @@ button {
     border: .5px solid black;
 }
 
+#map {
+    height: 180px;
+    width: 200px;
+}
 
 .card {
     padding: 10px;
