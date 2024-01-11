@@ -1,5 +1,7 @@
 package com.stlpd.respository;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,5 +12,9 @@ import com.stlpd.model.Incident;
 public interface IncidentRepository extends JpaRepository<Incident, Long> {
 
     Optional<Incident> findByInciId(String inciIdString);
+
+    List<Incident> findByConvertedDateBetweenOrderByConvertedDateDesc(LocalDateTime startDate, LocalDateTime endDate);
+
+    Optional<Incident> findFirstByIncidentLocationLike(String location);
 
 }

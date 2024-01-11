@@ -3,6 +3,9 @@ package com.stlpd.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -32,10 +35,12 @@ public class Incident {
     private String city;
     private String state;
     private String zip;
+    private LocalDateTime convertedDate;
 
     public Incident(String inciId, String dateInc, String timeInc, String offense, String nibrsGrp, String nibrsCode,
             String beat, String district, String neighborhood, String latitude, String longitude,
-            String incidentLocation, String locationStreet2Apt, String city, String state, String zip) {
+            String incidentLocation, String locationStreet2Apt, String city, String state, String zip,
+            LocalDateTime convertedDate) {
         this.inciId = inciId;
         this.dateInc = dateInc;
         this.timeInc = timeInc;
@@ -52,6 +57,7 @@ public class Incident {
         this.city = city;
         this.state = state;
         this.zip = zip;
+        this.convertedDate = convertedDate;
     }
 
 }

@@ -7,19 +7,23 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import com.stlpd.model.Call;
+import com.stlpd.model.Incident;
 
 @Repository
 public interface CallRepository extends JpaRepository<Call, Long> {
 
-    Optional<Call> findByEventID(String callIDString);
+        Optional<Call> findByEventID(String callIDString);
 
-    List<Call> findByDatetimeAfterOrderByDatetimeDesc(LocalDateTime daysAgo);
+        List<Call> findByDatetimeBetweenOrderByDatetimeDesc(LocalDateTime startDate,
+                        LocalDateTime endDate);
 
-    List<Call> findByLocationAndDatetimeAfterOrderByDatetimeDesc(String location, LocalDateTime daysAgo);
+        List<Call> findByLocationAndDatetimeBetweenOrderByDatetimeDesc(String location, LocalDateTime startDate,
+                        LocalDateTime endDate);
 
-    List<Call> findByTypeAndDatetimeAfterOrderByDatetimeDesc(String type, LocalDateTime daysAgo);
+        List<Call> findByTypeAndDatetimeBetweenOrderByDatetimeDesc(String type, LocalDateTime startDate,
+                        LocalDateTime endDate);
 
-    List<Call> findByLocationAndTypeAndDatetimeAfterOrderByDatetimeDesc(String locaiton, String type,
-            LocalDateTime daysAgo);
+        List<Call> findByTypeAndLocationAndDatetimeBetweenOrderByDatetimeDesc(String type, String location,
+                        LocalDateTime startDate, LocalDateTime endDate);
 
 }

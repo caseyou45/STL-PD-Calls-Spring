@@ -5,7 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.stlpd.dto.CallCountDTO;
+import com.stlpd.dto.DisplayDTO;
 import com.stlpd.error.ErrorDisplayHandler;
 import com.stlpd.service.CombinedService;
 
@@ -23,31 +23,35 @@ public class HomeController {
 
     @GetMapping("/")
     public String index(
-            @RequestParam(name = "daysAgo", required = false, defaultValue = "1") String daysAgo,
+            @RequestParam(name = "source", required = false, defaultValue = "call") String source,
             @RequestParam(name = "type", required = false) String type,
             @RequestParam(name = "location", required = false) String location,
-            @RequestParam(name = "sortDirection", required = false, defaultValue = "DESC") String sortDirection,
-            @RequestParam(name = "sortMethod", required = false, defaultValue = "datetimeSort") String sortMethod,
-
+            @RequestParam(name = "startDate", required = false) String startDate,
+            @RequestParam(name = "endDate", required = false) String endDate,
+            @RequestParam(name = "sortDirection", required = false) String sortDirection,
+            @RequestParam(name = "sortMethod", required = false) String sortMethod,
             Model model) {
 
-        List<CallCountDTO> calls = new ArrayList<>();
+        List<DisplayDTO> items = new ArrayList<>();
+
         String errorMessage = "";
 
         try {
-            calls = combinedService.createDTOS(daysAgo,
-                    type, location, sortDirection, sortMethod);
+            items = combinedService.getDTOs(source, type, location, startDate, endDate, sortDirection, sortMethod);
 
         } catch (Exception e) {
             errorMessage = ErrorDisplayHandler.GetErrorString(e);
         }
 
-        model.addAttribute("calls", calls);
+        model.addAttribute("items", items);
+        model.addAttribute("source", source);
         model.addAttribute("type", type);
         model.addAttribute("location", location);
+        model.addAttribute("startDate", location);
+        model.addAttribute("endDate", location);
         model.addAttribute("sortDirection", sortDirection);
         model.addAttribute("sortMethod", sortMethod);
-        model.addAttribute("error", errorMessage);
+        model.addAttribute("errorMessage", errorMessage);
 
         return "index";
     }

@@ -1,98 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
-    <title>Call List</title>
+    <title>List</title>
     <link th:href="@{/css/styles.css}" rel="stylesheet" />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-      crossorigin=""
-    />
   </head>
   <body>
-    <h1>Call List</h1>
-    <button th:onclick="updateParamsAndSubmit('daysAgo', 1)">
-      Past 24 Hours
-    </button>
-    <button th:onclick="updateParamsAndSubmit('daysAgo', 3)">
-      Past 3 Days
-    </button>
-    <button th:onclick="updateParamsAndSubmit('daysAgo', 7)">
-      Past 7 Days
-    </button>
-    <button th:onclick="updateParamsAndSubmit('daysAgo', 30)">
-      Past Month
-    </button>
-    <div class="sort">
-      <span>Sort:</span>
-      <select id="sortCategory" onchange="submitSort(this.value)">
-        <option
-          th:value="'datetimeSort'"
-          th:selected="${sortMethod == 'datetimeSort'}"
-        >
-          Date / Time
-        </option>
-        <option
-          th:value="'locationSort'"
-          th:selected="${sortMethod == 'locationSort'}"
-        >
-          Location
-        </option>
-        <option th:value="'typeSort'" th:selected="${sortMethod == 'typeSort'}">
-          Type
-        </option>
-      </select>
+    <section class="control">
+      <form id="dateForm" onsubmit="updateParamsAndSubmit(); return false;">
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" required value="2023-12-30" />
 
-      <button id="sortDirection" onclick="toggleSortDirection()">
-        <span th:text="${sortDirection}"></span>
-      </button>
-    </div>
-    <p th:if="${error}" th:text="${error}"></p>
-    <div id="map"></div>
-    <div class="filter">
-      <p class="callCount"></p>
-      <div class="typeContainer">
-        <button
-          th:if="${type}"
-          class="type buttonBox"
-          th:text="${type}"
-          th:onclick="updateParamsAndSubmit('type', null)"
-        ></button>
-      </div>
-      <div class="locationContainer">
-        <button
-          th:if="${location}"
-          class="location buttonBox"
-          th:text="${location}"
-          th:onclick="updateParamsAndSubmit('location', null)"
-        ></button>
-      </div>
-    </div>
-
-    <div th:each="call : ${calls}">
-      <div class="card">
-        <div th:text="${call.displayDateTime}"></div>
-        <div class="typeContainer">
-          <button
-            class="location buttonBox"
-            th:text="${call.callType}"
-            th:onclick="updateParamsAndSubmit('type', [[${call.callType}]])"
-          ></button>
-          <span th:text="${call.countType}"></span>
-        </div>
-        <div class="locationContainer">
-          <button
-            class="location buttonBox"
-            th:text="${call.callLocation}"
-            th:onclick="updateParamsAndSubmit('location', [[${call.callLocation}]])"
-          ></button>
-          <span th:text="${call.countLocation}"></span>
-        </div>
-      </div>
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" required value="2023-12-31" />
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+    <h1 th:text="${errorMessage}"></h1>
+    <div th:each="item : ${items}">
+      <span th:text="${item.location}"> </span>
+      <span th:text="${item.offense}"> </span>
+      <span th:text="${item.neighborhood}"> </span>
     </div>
     <script th:inline="javascript">
       function updateParamsAndSubmit(key, value) {
+        var startDate = document.getElementById("startDate").value;
+        var endDate = document.getElementById("endDate").value;
+
         var currentUrl = window.location.href;
 
         var params = {};
@@ -108,6 +41,9 @@
         } else {
           params[key] = value;
         }
+
+        params.startDate = startDate;
+        params.endDate = endDate;
 
         var newUrl =
           currentUrl.split("?")[0] + "?" + new URLSearchParams(params);
@@ -136,19 +72,6 @@
 
         window.location.href = url.toString();
       }
-    </script>
-    <script
-      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-      crossorigin=""
-    ></script>
-    <script defer>
-      var map = L.map("map").setView([51.505, -0.09], 13);
-      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution:
-          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      }).addTo(map);
     </script>
   </body>
 </html>
