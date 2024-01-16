@@ -32,6 +32,7 @@ public class Incident {
     private String longitude;
     private String incidentLocation;
     private String locationStreet2Apt;
+    private String modifiedLocation;
     private String city;
     private String state;
     private String zip;

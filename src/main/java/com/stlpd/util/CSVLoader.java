@@ -21,7 +21,6 @@ public class CSVLoader {
     private final CallRepository callRepository;
     private final IncidentRepository incidentRepository;
 
-    @Autowired
     public CSVLoader(CallRepository callRepository, IncidentRepository incidentRepository) {
         this.callRepository = callRepository;
         this.incidentRepository = incidentRepository;

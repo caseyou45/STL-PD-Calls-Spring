@@ -1,9 +1,11 @@
 package com.stlpd.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.stlpd.dto.DisplayDTO;
+import com.stlpd.dto.QueryDTO;
+import com.stlpd.util.DTOSorting;
+import com.stlpd.util.NeighborhoodMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,20 +15,35 @@ public class CombinedService {
 
     private CallService callService;
 
-    @Autowired
-    public CombinedService(CallService callService) {
+    private IncidentService incidentService;
+
+    private final NeighborhoodMap neighborhoodMap;
+
+    public CombinedService(CallService callService, IncidentService incidentService) {
         this.callService = callService;
+        this.incidentService = incidentService;
+        this.neighborhoodMap = new NeighborhoodMap();
     }
 
-    public List<DisplayDTO> getDTOs(String source, String type, String location, String startDateString,
-            String endDateString,
-            String sortDirection, String sortMethod) throws Exception {
+    public List<DisplayDTO> getDTOs(QueryDTO query)
+            throws Exception {
 
         List<DisplayDTO> items = new ArrayList<>();
-        if (source.equals("call")) {
-            items = callService.getCallDtos(source, type, location, startDateString, endDateString, sortDirection,
-                    sortMethod);
+        if (query.getSource().equals("calls")) {
+            items = callService.getCalls(query);
+        } else {
+            items = incidentService.getIncidents(query);
         }
+
+        for (DisplayDTO displayDTO : items) {
+            String n = displayDTO.getNeighborhood();
+            if (n != null && !n.isEmpty()) {
+                Integer neighborhoodAsInt = Integer.parseInt(displayDTO.getNeighborhood());
+                displayDTO.setNeighborhood(neighborhoodMap.getNeighborhood(neighborhoodAsInt));
+            }
+        }
+
+        DTOSorting.sort(query.getSortMethod(), query.getSortDirection(), items);
 
         return items;
 

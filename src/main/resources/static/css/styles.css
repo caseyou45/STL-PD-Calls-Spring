@@ -1,13 +1,77 @@
-html,
 body {
-    padding: 0;
-    margin: 0;
+    background-color: rgb(249, 248, 248);
     height: 100vh;
+    margin: 0;
+    padding: 0;
     width: 100vw;
 }
 
 main {
-    width: 80%;
+    background-color: white;
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, .2);
+    height: 100vh;
     margin: 0 auto;
+    padding: 20px;
+    width: 80%;
+}
 
+button,
+select {
+    background: none;
+    border: 1px solid black;
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, .2);
+
+    cursor: pointer;
+    margin: 5px 0 5px 0;
+    padding: .5rem 1rem .5rem .45rem;
+
+    display: flex;
+    align-items: center;
+
+}
+
+
+.item {
+    background-color: white;
+    border: 1px solid #000;
+    margin: 0 0 20px 0;
+    padding: 5px;
+}
+
+.item-container {
+    border: .2px solid black;
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, .2);
+    max-height: 80vh;
+    max-width: 25vw;
+    overflow-x: scroll;
+    padding: 10px;
+}
+
+
+.location-button::before,
+.offense-button::before,
+.control .location-button::before,
+.control .offense-button::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+    background-size: contain;
+}
+
+
+
+.location-button::before {
+    background-image: url('../images/loc.png');
+}
+
+.offense-button::before {
+    background-image: url('../images/phone.png');
+}
+
+
+.control .location-button::before,
+.control .offense-button::before {
+    background-image: url('../images/close.png');
 }

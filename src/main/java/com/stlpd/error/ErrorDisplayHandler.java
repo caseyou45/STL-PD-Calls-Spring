@@ -1,10 +1,16 @@
 package com.stlpd.error;
 
+import java.util.Arrays;
+
 public class ErrorDisplayHandler {
 
     public static String GetErrorString(Exception exception) {
+        StackTraceElement[] st = Thread.currentThread().getStackTrace();
+
+        System.out.println(Arrays.toString(st));
+
         if (exception instanceof NumberFormatException) {
-            return "Error: Period Of Days Chosen Was Invalid " + exception.getMessage();
+            return "Error: Number error" + exception.getMessage();
         } else if (exception instanceof IllegalArgumentException) {
             return "Error: " + exception.getMessage();
         } else if (exception instanceof ArrayIndexOutOfBoundsException) {

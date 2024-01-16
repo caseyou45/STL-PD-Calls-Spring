@@ -5,72 +5,143 @@
     <link th:href="@{/css/styles.css}" rel="stylesheet" />
   </head>
   <body>
-    <section class="control">
-      <form id="dateForm" onsubmit="updateParamsAndSubmit(); return false;">
+    <main>
+      <section class="control">
         <label for="startDate">Start Date:</label>
-        <input type="date" id="startDate" required value="2023-12-30" />
+        <input
+          type="date"
+          id="startDate"
+          required
+          th:value="${query.startDate}"
+          name="startDate"
+          onchange="updateParams(this)"
+        />
 
         <label for="endDate">End Date:</label>
-        <input type="date" id="endDate" required value="2023-12-31" />
-        <button type="submit">Submit</button>
-      </form>
-    </section>
-    <h1 th:text="${errorMessage}"></h1>
-    <div th:each="item : ${items}">
-      <span th:text="${item.location}"> </span>
-      <span th:text="${item.offense}"> </span>
-      <span th:text="${item.neighborhood}"> </span>
-    </div>
-    <script th:inline="javascript">
-      function updateParamsAndSubmit(key, value) {
-        var startDate = document.getElementById("startDate").value;
-        var endDate = document.getElementById("endDate").value;
+        <input
+          type="date"
+          id="endDate"
+          required
+          th:value="${query.endDate}"
+          name="endDate"
+          onchange="updateParams(this)"
+        />
 
-        var currentUrl = window.location.href;
+        <br />
+        <label for="calls">Daily Calls:</label>
+        <input
+          type="radio"
+          id="calls"
+          th:checked="${query.source == 'calls'}"
+          name="source"
+          value="calls"
+          onclick="updateParams(this)"
+        />
 
-        var params = {};
+        <label for="incidents">Incident Reports:</label>
+        <input
+          type="radio"
+          id="incidents"
+          name="source"
+          value="incidents"
+          th:checked="${query.source == 'incidents'}"
+          onclick="updateParams(this)"
+        />
+
+        <br />
+        <span>Sort:</span>
+        <select id="sortMethod" name="sortMethod" onchange="updateParams(this)">
+          <option
+            value="datetimeSort"
+            th:selected="${query.sortMethod == 'datetimeSort'}"
+          >
+            Date / Time
+          </option>
+          <option
+            value="locationSort"
+            th:selected="${query.sortMethod == 'locationSort'}"
+          >
+            Location
+          </option>
+          <option
+            value="typeSort"
+            th:selected="${query.sortMethod == 'typeSort'}"
+          >
+            Type
+          </option>
+        </select>
+
+        <button
+          class="location-button"
+          name="location"
+          onclick="updateParams(this)"
+          th:if="${query.location}"
+          th:text="${query.location}"
+        ></button>
+
+        <button
+          class="offense-button"
+          name="offense"
+          onclick="updateParams(this)"
+          th:if="${query.offense}"
+          th:text="${query.offense}"
+        ></button>
+        <form action="/" method="get">
+          <button type="submit">Clear</button>
+        </form>
+      </section>
+
+      <h1 th:text="${errorMessage}"></h1>
+      <div class="item-container">
+        <div th:each="item : ${items}" class="item">
+          <span th:text="${item.datetime}"></span>
+          <br />
+
+          <button
+            class="offense-button"
+            name="offense"
+            onclick="updateParams(this)"
+            th:value="${item.offense}"
+            th:if="${item.offense}"
+            th:text="${item.offense}"
+          ></button>
+
+          <button
+            class="location-button"
+            name="location"
+            onclick="updateParams(this)"
+            th:value="${item.location}"
+            th:if="${item.location}"
+            th:text="${item.location}"
+          ></button>
+
+          <button
+            name="neighborhood"
+            onclick="updateParams(this)"
+            th:value="${item.neighborhood}"
+            th:if="${item.neighborhood}"
+            th:text="${item.neighborhood}"
+          ></button>
+        </div>
+      </div>
+    </main>
+    <script>
+      function updateParams(element) {
+        var name = element.name;
+        var value = element.value;
 
         var urlParams = new URLSearchParams(window.location.search);
 
-        urlParams.forEach(function (v, k) {
-          params[k] = v;
-        });
-
-        if (value == null) {
-          delete params[key];
+        if (value) {
+          urlParams.set(name, value);
         } else {
-          params[key] = value;
+          urlParams.delete(name);
         }
 
-        params.startDate = startDate;
-        params.endDate = endDate;
-
-        var newUrl =
-          currentUrl.split("?")[0] + "?" + new URLSearchParams(params);
+        var newUrl = window.location.pathname + "?" + urlParams.toString();
+        window.history.replaceState({}, "", newUrl);
 
         window.location.href = newUrl;
-      }
-
-      function submitSort(sortMethod) {
-        var currentUrl = window.location.href;
-        var url = new URL(currentUrl);
-
-        url.searchParams.set("sortMethod", sortMethod);
-
-        window.location.href = url.toString();
-      }
-
-      function toggleSortDirection() {
-        var currentUrl = window.location.href;
-        var url = new URL(currentUrl);
-
-        var currentDirection = url.searchParams.get("sortDirection");
-
-        var newDirection = currentDirection === "ASC" ? "DESC" : "ASC";
-
-        url.searchParams.set("sortDirection", newDirection);
-
-        window.location.href = url.toString();
       }
     </script>
   </body>

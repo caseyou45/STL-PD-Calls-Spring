@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.stlpd.dto.DisplayDTO;
+import com.stlpd.dto.QueryDTO;
 import com.stlpd.model.Incident;
 import com.stlpd.respository.IncidentRepository;
 
@@ -22,24 +23,37 @@ public class IncidentService {
         this.incidentRepository = incidentRepository;
     }
 
-    public List<DisplayDTO> createDTOS(String startDateString, String endDateString) {
-        startDateString += " 00:00:00";
-        endDateString += " 00:00:00";
-
-        List<DisplayDTO> list = new ArrayList<>();
-
+    public List<DisplayDTO> getIncidents(QueryDTO query) throws Exception {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        LocalDateTime startDate = LocalDateTime.parse(startDateString, dateTimeFormatter);
-        LocalDateTime endDate = LocalDateTime.parse(endDateString, dateTimeFormatter);
+        String startDateString = query.getStartDate();
+        String endDateString = query.getEndDate();
 
-        for (Incident incident : incidentRepository.findByConvertedDateBetweenOrderByConvertedDateDesc(startDate,
-                endDate)) {
-            list.add(new DisplayDTO(incident));
+        List<DisplayDTO> displayDTOs = new ArrayList<>();
+
+        if (startDateString == null || startDateString.isEmpty()) {
+            startDateString = "2023-12-30";
+            query.setStartDate(startDateString);
 
         }
 
-        return list;
+        if (endDateString == null || endDateString.isEmpty()) {
+            endDateString = "2023-12-31";
+            query.setEndDate(endDateString);
+
+        }
+
+        LocalDateTime startDate = LocalDateTime.parse(startDateString + " 00:00:00", dateTimeFormatter);
+        LocalDateTime endDate = LocalDateTime.parse(endDateString + " 00:00:00", dateTimeFormatter);
+
+        for (Incident incident : incidentRepository.findByConvertedDateBetweenOrderByConvertedDateDesc(startDate,
+                endDate)) {
+
+            DisplayDTO displayDTO = new DisplayDTO(incident);
+            displayDTOs.add(displayDTO);
+        }
+
+        return displayDTOs;
 
     }
 

@@ -18,7 +18,6 @@ public class WebScraper {
 
     private final CallRepository callRepository;
 
-    @Autowired
     public WebScraper(CallRepository callRepository) {
         this.callRepository = callRepository;
     }

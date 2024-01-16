@@ -7,7 +7,6 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import com.stlpd.model.Call;
-import com.stlpd.model.Incident;
 
 @Repository
 public interface CallRepository extends JpaRepository<Call, Long> {

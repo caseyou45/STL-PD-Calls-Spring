@@ -39,6 +39,7 @@ public class DisplayDTO {
         this.datetime = call.getDatetime();
         this.location = call.getLocation();
         this.offense = call.getType();
+        this.neighborhood = call.getNeighborhood();
 
     }
 
