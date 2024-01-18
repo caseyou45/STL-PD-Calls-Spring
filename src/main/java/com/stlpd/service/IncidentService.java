@@ -51,6 +51,7 @@ public class IncidentService {
 
             DisplayDTO displayDTO = new DisplayDTO(incident);
             displayDTOs.add(displayDTO);
+
         }
 
         return displayDTOs;

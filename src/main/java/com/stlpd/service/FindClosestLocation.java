@@ -5,27 +5,23 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.stlpd.model.Call;
-import com.stlpd.model.Incident;
-import com.stlpd.respository.IncidentRepository;
+import com.stlpd.model.Location;
+import com.stlpd.respository.LocationRepository;
 
 @Service
 public class FindClosestLocation {
 
-    private IncidentRepository incidentRepository;
+    private LocationRepository locationRepository;
 
-    public FindClosestLocation(IncidentRepository incidentRepository) {
-        this.incidentRepository = incidentRepository;
+    public FindClosestLocation(LocationRepository locationRepository) {
+        this.locationRepository = locationRepository;
     }
 
-    public void findClosestMatch(Call call) {
+    public Optional<Location> findClosestMatch(Call call) {
+        return locationRepository.findFirstByLocationApprox(call.getModifiedLocation());
+    }
 
-        Optional<Incident> matchingIncident = incidentRepository
-                .findFirstByIncidentLocationLike(call.getModifiedLocation());
-
-        if (matchingIncident.isPresent()) {
-            Incident i = matchingIncident.get();
-            call.setNeighborhood(i.getNeighborhood());
-        }
-
+    public Optional<Location> findClosestMatch(String location) {
+        return locationRepository.findFirstByLocationApprox(location);
     }
 }

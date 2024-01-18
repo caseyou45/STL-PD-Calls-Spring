@@ -18,11 +18,9 @@ import com.stlpd.respository.CallRepository;
 public class CallService {
 
     private CallRepository callRepository;
-    private FindClosestLocation findClosestLocation;
 
-    public CallService(CallRepository callRepository, FindClosestLocation findClosestLocation) {
+    public CallService(CallRepository callRepository) {
         this.callRepository = callRepository;
-        this.findClosestLocation = findClosestLocation;
     }
 
     public List<DisplayDTO> getCalls(QueryDTO query) throws Exception {
@@ -71,6 +69,7 @@ public class CallService {
         for (Call call : calls) {
 
             DisplayDTO displayDTO = new DisplayDTO(call);
+
             displayDTOs.add(displayDTO);
 
         }

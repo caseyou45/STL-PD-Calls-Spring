@@ -36,10 +36,13 @@ public class CombinedService {
         }
 
         for (DisplayDTO displayDTO : items) {
-            String n = displayDTO.getNeighborhood();
-            if (n != null && !n.isEmpty()) {
-                Integer neighborhoodAsInt = Integer.parseInt(displayDTO.getNeighborhood());
-                displayDTO.setNeighborhood(neighborhoodMap.getNeighborhood(neighborhoodAsInt));
+
+            String neighborhoodString = displayDTO.getNeighborhood();
+
+            if (neighborhoodString != null && !neighborhoodString.isEmpty()) {
+
+                displayDTO.setNeighborhood(neighborhoodMap.getNeighborhood(displayDTO.getNeighborhood()));
+
             }
         }
 

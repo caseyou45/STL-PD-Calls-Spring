@@ -28,7 +28,17 @@ select {
     display: flex;
     align-items: center;
 
+    text-align: left;
+
 }
+
+button:hover,
+select:hover {
+    box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, .4);
+
+
+}
+
 
 
 .item {
@@ -48,18 +58,33 @@ select {
 }
 
 
+.clear-button::before,
 .location-button::before,
 .offense-button::before,
-.control .location-button::before,
-.control .offense-button::before {
+.neighborhood-button::before {
     content: '';
     display: inline-block;
     width: 16px;
     height: 16px;
     margin-right: 4px;
     background-size: contain;
+
+
 }
 
+.control .clear-button,
+.control .location-button,
+.control .offense-button,
+.control .neighborhood-button {
+    border: 1px solid red;
+
+}
+
+
+
+.neighborhood-button::before {
+    background-image: url('../images/house.png');
+}
 
 
 .location-button::before {
@@ -70,8 +95,19 @@ select {
     background-image: url('../images/phone.png');
 }
 
-
+.control .clear-button::before,
 .control .location-button::before,
 .control .offense-button::before {
     background-image: url('../images/close.png');
+}
+
+
+.data {
+    display: flex;
+    flex-direction: row;
+}
+
+#map {
+    height: 480px;
+    width: 500px;
 }

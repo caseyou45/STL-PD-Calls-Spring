@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.stlpd.model.Call;
 import com.stlpd.model.Incident;
+import com.stlpd.model.Location;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,7 +40,19 @@ public class DisplayDTO {
         this.datetime = call.getDatetime();
         this.location = call.getLocation();
         this.offense = call.getType();
-        this.neighborhood = call.getNeighborhood();
+
+        if (call.getLocationEntity() != null) {
+            this.neighborhood = call.getLocationEntity().getNeighborhood();
+            this.latitude = call.getLocationEntity().getLatitude();
+            this.longitude = call.getLocationEntity().getLongitude();
+        }
+
+    }
+
+    public void ifLocationAddInfoToDTO(Location location) {
+        this.neighborhood = location.getNeighborhood();
+        this.latitude = location.getLatitude();
+        this.longitude = location.getLongitude();
 
     }
 

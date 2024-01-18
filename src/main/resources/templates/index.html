@@ -3,6 +3,12 @@
   <head>
     <title>List</title>
     <link th:href="@{/css/styles.css}" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
   </head>
   <body>
     <main>
@@ -87,44 +93,48 @@
           th:text="${query.offense}"
         ></button>
         <form action="/" method="get">
-          <button type="submit">Clear</button>
+          <button class="clear-button" type="submit">Clear</button>
         </form>
       </section>
 
       <h1 th:text="${errorMessage}"></h1>
-      <div class="item-container">
-        <div th:each="item : ${items}" class="item">
-          <span th:text="${item.datetime}"></span>
-          <br />
+      <section class="data">
+        <div class="item-container">
+          <div th:each="item : ${items}" class="item">
+            <span th:text="${item.datetime}"></span>
+            <br />
 
-          <button
-            class="offense-button"
-            name="offense"
-            onclick="updateParams(this)"
-            th:value="${item.offense}"
-            th:if="${item.offense}"
-            th:text="${item.offense}"
-          ></button>
+            <button
+              class="offense-button"
+              name="offense"
+              onclick="updateParams(this)"
+              th:value="${item.offense}"
+              th:if="${item.offense}"
+              th:text="${item.offense}"
+            ></button>
 
-          <button
-            class="location-button"
-            name="location"
-            onclick="updateParams(this)"
-            th:value="${item.location}"
-            th:if="${item.location}"
-            th:text="${item.location}"
-          ></button>
+            <button
+              class="location-button"
+              name="location"
+              onclick="updateParams(this)"
+              th:value="${item.location}"
+              th:if="${item.location}"
+              th:text="${item.location}"
+            ></button>
 
-          <button
-            name="neighborhood"
-            onclick="updateParams(this)"
-            th:value="${item.neighborhood}"
-            th:if="${item.neighborhood}"
-            th:text="${item.neighborhood}"
-          ></button>
+            <button
+              class="neighborhood-button"
+              onclick="updateParams(this)"
+              th:value="${item.neighborhood}"
+              th:if="${item.neighborhood}"
+              th:text="${item.neighborhood}"
+            ></button>
+          </div>
         </div>
-      </div>
+        <div id="map"></div>
+      </section>
     </main>
+
     <script>
       function updateParams(element) {
         var name = element.name;
@@ -142,6 +152,34 @@
         window.history.replaceState({}, "", newUrl);
 
         window.location.href = newUrl;
+      }
+    </script>
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script>
+      var map = L.map("map").setView([38.627, -90.3], 11);
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution:
+          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(map);
+    </script>
+
+    <script th:inline="javascript">
+      var data = [[${items}]];
+      console.log("list: " + data.length);
+      for (var i = 0; i < data.length; i++) {
+          var latitude = parseFloat(data[i].latitude);
+          var longitude = parseFloat(data[i].longitude);
+
+          if (!isNaN(latitude) && !isNaN(longitude)) {
+              L.marker([latitude, longitude]).bindPopup(
+                    "Location: " + data[i].location + '<br>' +
+                    "Offense: " + data[i].offense + '<br>' ).addTo(map)
+          }
       }
     </script>
   </body>

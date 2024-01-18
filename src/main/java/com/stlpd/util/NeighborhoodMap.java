@@ -89,9 +89,17 @@ public class NeighborhoodMap {
 
     }
 
-    public String getNeighborhood(int num) {
-        if (neighborhoodMap.containsKey(num)) {
-            return neighborhoodMap.get(num);
+    public String getNeighborhood(String num) {
+        try {
+            int neighborhoodAsInt = Integer.parseInt(num);
+
+            if (neighborhoodMap.containsKey(neighborhoodAsInt)) {
+                return neighborhoodMap.get(neighborhoodAsInt);
+            }
+
+        } catch (Exception e) {
+            return num;
+
         }
 
         return "- - -";
