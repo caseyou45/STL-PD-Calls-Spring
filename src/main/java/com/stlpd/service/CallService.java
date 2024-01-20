@@ -51,20 +51,9 @@ public class CallService {
 
         String type = query.getOffense();
         String location = query.getLocation();
+        String neighborhood = query.getNeighborhood();
 
-        if ((type == null || type.isEmpty()) && (location == null || location.isEmpty())) {
-            calls = callRepository.findByDatetimeBetweenOrderByDatetimeDesc(startDate,
-                    endDate);
-        } else if (type == null || type.isEmpty()) {
-            calls = callRepository.findByLocationAndDatetimeBetweenOrderByDatetimeDesc(location, startDate,
-                    endDate);
-        } else if (location == null || location.isEmpty()) {
-            calls = callRepository.findByTypeAndDatetimeBetweenOrderByDatetimeDesc(type, startDate,
-                    endDate);
-        } else {
-            calls = callRepository.findByTypeAndLocationAndDatetimeBetweenOrderByDatetimeDesc(type, location, startDate,
-                    endDate);
-        }
+        calls = callRepository.findByDynamicParameters(type, location, neighborhood, startDate, endDate);
 
         for (Call call : calls) {
 

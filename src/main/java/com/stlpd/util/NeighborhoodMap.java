@@ -1,6 +1,7 @@
 package com.stlpd.util;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class NeighborhoodMap {
     private HashMap<Integer, String> neighborhoodMap;
@@ -103,5 +104,14 @@ public class NeighborhoodMap {
         }
 
         return "- - -";
+    }
+
+    public Integer getNeighborhoodIntWithString(String neighborhoodString) {
+        for (Map.Entry<Integer, String> entry : neighborhoodMap.entrySet()) {
+            if (entry.getValue().equals(neighborhoodString)) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 }

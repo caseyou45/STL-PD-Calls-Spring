@@ -101,7 +101,12 @@
       <section class="data">
         <div class="item-container">
           <div th:each="item : ${items}" class="item">
-            <span th:text="${item.datetime}"></span>
+            <span th:text="${item.displayDate}"></span>
+            <span th:if="${item.displayTime}"> - </span>
+            <span
+              th:text="${item.displayTime}"
+              th:if="${item.displayTime}"
+            ></span>
             <br />
 
             <button
@@ -124,6 +129,7 @@
 
             <button
               class="neighborhood-button"
+              name="neighborhood"
               onclick="updateParams(this)"
               th:value="${item.neighborhood}"
               th:if="${item.neighborhood}"
@@ -170,15 +176,21 @@
 
     <script th:inline="javascript">
       var data = [[${items}]];
-      console.log("list: " + data.length);
       for (var i = 0; i < data.length; i++) {
-          var latitude = parseFloat(data[i].latitude);
-          var longitude = parseFloat(data[i].longitude);
+          const latitude = parseFloat(data[i].latitude);
+          const longitude = parseFloat(data[i].longitude);
+
+           let popUpText = "Date: " + data[i].displayDate + '<br>';
+
+           if(data[i].displayTime !== ""){
+            popUpText += "Time: " + data[i].displayTime + '<br>';
+           }
+
+           popUpText += "Location: " + data[i].location + '<br>' +
+                    "Offense: " + data[i].offense + '<br>';
 
           if (!isNaN(latitude) && !isNaN(longitude)) {
-              L.marker([latitude, longitude]).bindPopup(
-                    "Location: " + data[i].location + '<br>' +
-                    "Offense: " + data[i].offense + '<br>' ).addTo(map)
+              L.marker([latitude, longitude]).bindPopup(popUpText).addTo(map)
           }
       }
     </script>

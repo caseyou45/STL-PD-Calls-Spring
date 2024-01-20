@@ -14,6 +14,7 @@ public class QueryDTO {
     private String source;
     private String offense;
     private String location;
+    private String neighborhood;
     private String startDate;
     private String endDate;
     public String sortDirection;

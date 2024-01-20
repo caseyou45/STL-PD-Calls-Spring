@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import com.stlpd.model.Call;
 import com.stlpd.model.Incident;
 import com.stlpd.model.Location;
+import com.stlpd.enums.Type;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,12 +21,14 @@ public class DisplayDTO {
     private String latitude;
     private String longitude;
     private String location;
-    private String city;
-    private String state;
-    private String zip;
+    private String displayDate;
+    private String displayTime;
+    private Type type;
+
     private LocalDateTime datetime;
 
     public DisplayDTO(Incident incident) {
+        this.type = Type.INCIDENT;
         this.date = incident.getDateInc();
         this.offense = incident.getOffense();
         this.neighborhood = incident.getNeighborhood();
@@ -36,7 +39,7 @@ public class DisplayDTO {
     }
 
     public DisplayDTO(Call call) {
-
+        this.type = Type.CALL;
         this.datetime = call.getDatetime();
         this.location = call.getLocation();
         this.offense = call.getType();

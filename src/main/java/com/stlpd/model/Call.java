@@ -22,20 +22,18 @@ public class Call {
     private String location;
     private String modifiedLocation;
     private String type;
-    private String neighborhood;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id")
     private Location locationEntity;
 
     public Call(LocalDateTime datetime, String eventID, String location, String modifiedLocation, String type,
-            String neighborhood, Location locationEntity) {
+            Location locationEntity) {
         this.datetime = datetime;
         this.eventID = eventID;
         this.location = location;
         this.modifiedLocation = modifiedLocation;
         this.type = type;
-        this.neighborhood = neighborhood;
         this.locationEntity = locationEntity;
     }
 }

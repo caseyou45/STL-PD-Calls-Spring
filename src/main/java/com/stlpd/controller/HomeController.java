@@ -9,6 +9,7 @@ import com.stlpd.dto.DisplayDTO;
 import com.stlpd.dto.QueryDTO;
 import com.stlpd.error.ErrorDisplayHandler;
 import com.stlpd.service.CombinedService;
+import com.stlpd.util.NeighborhoodMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +19,11 @@ public class HomeController {
 
     private final CombinedService combinedService;
 
+    private final NeighborhoodMap neighborhoodMap;
+
     public HomeController(CombinedService combinedService) {
         this.combinedService = combinedService;
+        neighborhoodMap = new NeighborhoodMap();
     }
 
     @GetMapping("/")
@@ -27,6 +31,7 @@ public class HomeController {
             @RequestParam(name = "source", required = false, defaultValue = "calls") String source,
             @RequestParam(name = "offense", required = false) String offense,
             @RequestParam(name = "location", required = false) String location,
+            @RequestParam(name = "neighborhood", required = false) String neighborhood,
             @RequestParam(name = "startDate", required = false) String startDate,
             @RequestParam(name = "endDate", required = false) String endDate,
             @RequestParam(name = "sortDirection", required = false, defaultValue = "ASC") String sortDirection,
@@ -35,8 +40,14 @@ public class HomeController {
 
         List<DisplayDTO> items = new ArrayList<>();
 
+        // A bit ugly
+        if (neighborhood != null && !neighborhood.isEmpty()) {
+            neighborhood = String.valueOf(neighborhoodMap.getNeighborhoodIntWithString(neighborhood));
+
+        }
+
         QueryDTO query = new QueryDTO(source,
-                offense, location, startDate, endDate, sortDirection, sortMethod);
+                offense, location, neighborhood, startDate, endDate, sortDirection, sortMethod);
 
         String errorMessage = "";
 
