@@ -11,6 +11,7 @@ import lombok.ToString;
 @ToString
 public class QueryDTO {
 
+    private String focusID;
     private String source;
     private String offense;
     private String location;

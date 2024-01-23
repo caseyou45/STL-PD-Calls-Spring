@@ -15,6 +15,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class DisplayDTO {
+    private Long id;
     private String date;
     private String offense;
     private String neighborhood;
@@ -28,6 +29,7 @@ public class DisplayDTO {
     private LocalDateTime datetime;
 
     public DisplayDTO(Incident incident) {
+        this.id = incident.getId();
         this.type = Type.INCIDENT;
         this.date = incident.getDateInc();
         this.offense = incident.getOffense();
@@ -39,6 +41,7 @@ public class DisplayDTO {
     }
 
     public DisplayDTO(Call call) {
+        this.id = call.getId();
         this.type = Type.CALL;
         this.datetime = call.getDatetime();
         this.location = call.getLocation();

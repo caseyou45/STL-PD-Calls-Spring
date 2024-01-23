@@ -35,12 +35,13 @@ public interface CallRepository extends JpaRepository<Call, Long> {
                         LocalDateTime endDate);
 
         @Query("SELECT c FROM Call c WHERE " +
+                        "(:id IS NULL OR c.id = :id) AND " +
                         "(:type IS NULL OR c.type = :type) AND " +
                         "(:location IS NULL OR c.location = :location) AND " +
                         "(:neighborhood IS NULL OR c.locationEntity.neighborhood = :neighborhood) AND " +
                         "(c.datetime BETWEEN :startDate AND :endDate) " +
                         "ORDER BY c.datetime DESC")
-        List<Call> findByDynamicParameters(String type, String location, String neighborhood,
+        List<Call> findByDynamicParameters(Long id, String type, String location, String neighborhood,
                         LocalDateTime startDate, LocalDateTime endDate);
 
 }

@@ -28,6 +28,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String index(
+            @RequestParam(name = "focusID", required = false) String focusID,
             @RequestParam(name = "source", required = false, defaultValue = "calls") String source,
             @RequestParam(name = "offense", required = false) String offense,
             @RequestParam(name = "location", required = false) String location,
@@ -40,13 +41,8 @@ public class HomeController {
 
         List<DisplayDTO> items = new ArrayList<>();
 
-        // A bit ugly
-        if (neighborhood != null && !neighborhood.isEmpty()) {
-            neighborhood = String.valueOf(neighborhoodMap.getNeighborhoodIntWithString(neighborhood));
-
-        }
-
-        QueryDTO query = new QueryDTO(source,
+        QueryDTO query = new QueryDTO(
+                focusID, source,
                 offense, location, neighborhood, startDate, endDate, sortDirection, sortMethod);
 
         String errorMessage = "";

@@ -13,14 +13,19 @@ import com.stlpd.dto.DisplayDTO;
 import com.stlpd.dto.QueryDTO;
 import com.stlpd.model.Call;
 import com.stlpd.respository.CallRepository;
+import com.stlpd.util.NeighborhoodMap;
 
 @Service
 public class CallService {
 
     private CallRepository callRepository;
 
+    private final NeighborhoodMap neighborhoodMap;
+
     public CallService(CallRepository callRepository) {
         this.callRepository = callRepository;
+        neighborhoodMap = new NeighborhoodMap();
+
     }
 
     public List<DisplayDTO> getCalls(QueryDTO query) throws Exception {
@@ -31,6 +36,11 @@ public class CallService {
 
         LocalDateTime startDate = null;
         LocalDateTime endDate = null;
+        Long id = null;
+
+        if (query.getFocusID() != null && !query.getFocusID().isEmpty()) {
+            id = Long.valueOf(query.getFocusID());
+        }
 
         if (query.getEndDate() == null || query.getEndDate().isEmpty()) {
             endDate = LocalDateTime.now();
@@ -53,7 +63,12 @@ public class CallService {
         String location = query.getLocation();
         String neighborhood = query.getNeighborhood();
 
-        calls = callRepository.findByDynamicParameters(type, location, neighborhood, startDate, endDate);
+        if (neighborhood != null && !neighborhood.isEmpty()) {
+            neighborhood = String.valueOf(neighborhoodMap.getNeighborhoodIntWithString(neighborhood));
+
+        }
+
+        calls = callRepository.findByDynamicParameters(id, type, location, neighborhood, startDate, endDate);
 
         for (Call call : calls) {
 

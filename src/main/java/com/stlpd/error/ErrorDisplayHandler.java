@@ -5,9 +5,6 @@ import java.util.Arrays;
 public class ErrorDisplayHandler {
 
     public static String GetErrorString(Exception exception) {
-        StackTraceElement[] st = Thread.currentThread().getStackTrace();
-
-        System.out.println(Arrays.toString(st));
 
         if (exception instanceof NumberFormatException) {
             return "Error: Number error" + exception.getMessage();

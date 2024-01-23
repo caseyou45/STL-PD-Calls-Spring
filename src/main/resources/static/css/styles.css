@@ -57,9 +57,9 @@ select:hover {
     padding: 10px;
 }
 
-
+.focusID-button::before,
 .clear-button::before,
-.location-button::before,
+n mmm b b .location-button::before,
 .offense-button::before,
 .neighborhood-button::before {
     content: '';
@@ -72,6 +72,7 @@ select:hover {
 
 }
 
+.control .focusID-button,
 .control .clear-button,
 .control .location-button,
 .control .offense-button,
@@ -95,9 +96,12 @@ select:hover {
     background-image: url('../images/phone.png');
 }
 
+.control .focusID-button::before,
 .control .clear-button::before,
 .control .location-button::before,
-.control .offense-button::before {
+.control .offense-button::before,
+.control .neighborhood-button::before {
+
     background-image: url('../images/close.png');
 }
 
