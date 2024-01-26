@@ -1,20 +1,22 @@
 package com.stlpd.error;
 
-import java.util.Arrays;
-
 public class ErrorDisplayHandler {
 
     public static String GetErrorString(Exception exception) {
+        return getFormattedError(exception);
 
-        if (exception instanceof NumberFormatException) {
-            return "Error: Number error" + exception.getMessage();
-        } else if (exception instanceof IllegalArgumentException) {
-            return "Error: " + exception.getMessage();
-        } else if (exception instanceof ArrayIndexOutOfBoundsException) {
-            return "ArrayIndexOutOfBoundsException: Array index is out of bounds.";
-        } else {
-            return "An unexpected error occurred: " + exception.getMessage();
-        }
     }
 
+    private static String getFormattedError(Exception exception) {
+        StackTraceElement[] stackTrace = exception.getStackTrace();
+        if (stackTrace.length > 0) {
+
+            StackTraceElement topElement = stackTrace[0];
+            String methodName = topElement.getMethodName();
+            String className = topElement.getClassName();
+            return exception.getMessage() + "-" + className + "-" + methodName;
+        }
+
+        return exception.getMessage();
+    }
 }

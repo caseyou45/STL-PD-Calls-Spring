@@ -59,7 +59,7 @@ select:hover {
 
 .focusID-button::before,
 .clear-button::before,
-n mmm b b .location-button::before,
+.location-button::before,
 .offense-button::before,
 .neighborhood-button::before {
     content: '';

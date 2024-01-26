@@ -52,6 +52,7 @@ public class HomeController {
 
         } catch (Exception e) {
             errorMessage = ErrorDisplayHandler.GetErrorString(e);
+
         }
 
         model.addAttribute("query", query);

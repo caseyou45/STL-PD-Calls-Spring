@@ -6,25 +6,27 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.stlpd.dto.DisplayDTO;
 import com.stlpd.dto.QueryDTO;
 import com.stlpd.model.Call;
+import com.stlpd.model.Neighborhood;
 import com.stlpd.respository.CallRepository;
-import com.stlpd.util.NeighborhoodMap;
+import com.stlpd.respository.NeighborhoodRepository;
 
 @Service
 public class CallService {
 
     private CallRepository callRepository;
 
-    private final NeighborhoodMap neighborhoodMap;
+    private final NeighborhoodRepository neighborhoodRepository;
 
-    public CallService(CallRepository callRepository) {
+    public CallService(CallRepository callRepository, NeighborhoodRepository neighborhoodRepository) {
         this.callRepository = callRepository;
-        neighborhoodMap = new NeighborhoodMap();
+        this.neighborhoodRepository = neighborhoodRepository;
 
     }
 
@@ -64,8 +66,10 @@ public class CallService {
         String neighborhood = query.getNeighborhood();
 
         if (neighborhood != null && !neighborhood.isEmpty()) {
-            neighborhood = String.valueOf(neighborhoodMap.getNeighborhoodIntWithString(neighborhood));
-
+            Optional<Neighborhood> neighborhoodEntity = neighborhoodRepository.findByNeighborhood(neighborhood);
+            if (neighborhoodEntity.isPresent()) {
+                neighborhood = neighborhoodEntity.get().getNumber();
+            }
         }
 
         calls = callRepository.findByDynamicParameters(id, type, location, neighborhood, startDate, endDate);
