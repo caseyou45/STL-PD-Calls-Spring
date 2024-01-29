@@ -21,16 +21,16 @@ public class CombinedService {
 
     private IncidentService incidentService;
 
-    private final NeighborhoodRepository neighborhoodRepository;
+    private final NeighborhoodService neighborhoodService;
 
     DateTimeFormatter dateFormattter = DateTimeFormatter.ofPattern("E, MM/dd/yyyy");
     DateTimeFormatter timeFormattter = DateTimeFormatter.ofPattern("h:mm a");
 
     public CombinedService(CallService callService, IncidentService incidentService,
-            NeighborhoodRepository neighborhoodRepository) {
+            NeighborhoodService neighborhoodService) {
         this.callService = callService;
         this.incidentService = incidentService;
-        this.neighborhoodRepository = neighborhoodRepository;
+        this.neighborhoodService = neighborhoodService;
     }
 
     public List<DisplayDTO> getDTOs(QueryDTO query)
@@ -46,14 +46,7 @@ public class CombinedService {
 
         for (DisplayDTO displayDTO : items) {
 
-            String neighborhoodString = displayDTO.getNeighborhood();
-
-            if (neighborhoodString != null && !neighborhoodString.isEmpty()) {
-                Optional<Neighborhood> neighborhoodEntity = neighborhoodRepository.findByNumber(neighborhoodString);
-                if (neighborhoodEntity.isPresent()) {
-                    displayDTO.setNeighborhood(neighborhoodEntity.get().getNeighborhood());
-                }
-            }
+            displayDTO.setNeighborhood(neighborhoodService.getNeighborhoodAsDisplayName(displayDTO.getNeighborhood()));
 
             displayDTO.setDisplayDate(displayDTO.getDatetime().format(dateFormattter));
 
