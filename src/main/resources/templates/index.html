@@ -56,68 +56,93 @@
 
         <br />
         <span>Sort:</span>
-        <select id="sortMethod" name="sortMethod" onchange="updateParams(this)">
-          <option
-            value="datetimeSort"
-            th:selected="${query.sortMethod == 'datetimeSort'}"
+        <div class="control-buttons-row">
+          <select
+            id="sortMethod"
+            name="sortMethod"
+            onchange="updateParams(this)"
           >
-            Date / Time
-          </option>
-          <option
-            value="locationSort"
-            th:selected="${query.sortMethod == 'locationSort'}"
+            <option
+              value="datetimeSort"
+              th:selected="${query.sortMethod == 'datetimeSort'}"
+            >
+              Date / Time
+            </option>
+            <option
+              value="locationSort"
+              th:selected="${query.sortMethod == 'locationSort'}"
+            >
+              Location
+            </option>
+            <option
+              value="typeSort"
+              th:selected="${query.sortMethod == 'typeSort'}"
+            >
+              Type
+            </option>
+          </select>
+          <select
+            id="sortDirection"
+            name="sortDirection"
+            onchange="updateParams(this)"
           >
-            Location
-          </option>
-          <option
-            value="typeSort"
-            th:selected="${query.sortMethod == 'typeSort'}"
+            <option value="ASC" th:selected="${query.sortDirection == 'ASC'}">
+              ASC
+            </option>
+            <option value="DESC" th:selected="${query.sortDirection == 'DESC'}">
+              DESC
+            </option>
+          </select>
+        </div>
+        <div class="control-buttons-row">
+          <button
+            class="location-button"
+            name="location"
+            onclick="updateParams(this)"
+            th:if="${query.location}"
+            th:text="${query.location}"
+          ></button>
+
+          <button
+            class="offense-button"
+            name="offense"
+            onclick="updateParams(this)"
+            th:if="${query.offense}"
+            th:text="${query.offense}"
+          ></button>
+
+          <button
+            class="neighborhood-button"
+            name="neighborhood"
+            onclick="updateParams(this)"
+            th:if="${query.neighborhood}"
+            th:text="${query.neighborhood}"
+          ></button>
+
+          <button
+            class="focusID-button"
+            name="focusID"
+            onclick="updateParams(this)"
+            th:if="${query.focusID}"
           >
-            Type
-          </option>
-        </select>
-
-        <button
-          class="location-button"
-          name="location"
-          onclick="updateParams(this)"
-          th:if="${query.location}"
-          th:text="${query.location}"
-        ></button>
-
-        <button
-          class="offense-button"
-          name="offense"
-          onclick="updateParams(this)"
-          th:if="${query.offense}"
-          th:text="${query.offense}"
-        ></button>
-
-        <button
-          class="neighborhood-button"
-          name="neighborhood"
-          onclick="updateParams(this)"
-          th:if="${query.neighborhood}"
-          th:text="${query.neighborhood}"
-        ></button>
-
-        <button
-          class="focusID-button"
-          name="focusID"
-          onclick="updateParams(this)"
-          th:if="${query.focusID}"
-        >
-          Undo Zoom
-        </button>
-
+            Undo Zoom
+          </button>
+        </div>
         <form action="/" method="get">
-          <button class="clear-button" type="submit">Clear</button>
+          <button class="clear-button" type="submit">Clear All Filters</button>
         </form>
       </section>
 
-      <h1 th:text="${errorMessage}"></h1>
       <section class="data">
         <div class="item-container">
+          <div
+            th:if="${!errorMessage.empty}"
+            th:text="${errorMessage}"
+            class="no-items"
+          ></div>
+          <div th:if="${items ==null or items.empty}" class="no-items">
+            Nothing here...
+          </div>
           <div th:each="item : ${items}" class="item">
             <div class="item-body">
               <span th:text="${item.displayDate}"></span>

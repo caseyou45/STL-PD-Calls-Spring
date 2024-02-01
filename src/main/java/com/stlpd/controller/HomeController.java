@@ -35,7 +35,7 @@ public class HomeController {
             @RequestParam(name = "neighborhood", required = false) String neighborhood,
             @RequestParam(name = "startDate", required = false) String startDate,
             @RequestParam(name = "endDate", required = false) String endDate,
-            @RequestParam(name = "sortDirection", required = false, defaultValue = "ASC") String sortDirection,
+            @RequestParam(name = "sortDirection", required = false, defaultValue = "DESC") String sortDirection,
             @RequestParam(name = "sortMethod", required = false, defaultValue = "datetimeSort") String sortMethod,
             Model model) {
 

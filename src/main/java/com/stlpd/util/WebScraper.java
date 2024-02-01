@@ -9,6 +9,8 @@ import org.jsoup.select.Elements;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
+
 import com.stlpd.respository.CallRepository;
 import com.stlpd.model.Call;
 
@@ -35,18 +37,20 @@ public class WebScraper {
                 String callLocationString = el.select("td").get(2).text();
                 String callTypeString = el.select("td").get(3).text();
 
-                Call call = new Call();
+                Optional<Call> existingCall = callRepository.findByEventID(callIDString);
 
-                LocalDateTime localDateTime = LocalDateTime.parse(callDateTimeString, formatter);
+                if (!existingCall.isPresent()) {
+                    Call call = new Call();
+                    LocalDateTime localDateTime = LocalDateTime.parse(callDateTimeString, formatter);
+                    call.setDatetime(localDateTime);
+                    call.setEventID(callIDString);
+                    call.setLocation(callLocationString);
+                    call.setType(callTypeString);
 
-                call.setDatetime(localDateTime);
-                call.setEventID(callIDString);
-                call.setLocation(callLocationString);
-                call.setType(callTypeString);
-
-                callRepository.save(call);
+                    callRepository.save(call);
+                    System.out.println("Call added");
+                }
             }
-
         } catch (Exception e) {
             System.out.println("Web " + e.getMessage());
         }
