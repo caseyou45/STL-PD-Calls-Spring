@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.stlpd.dto.DisplayDTO;
 import com.stlpd.model.Neighborhood;
 
 import com.stlpd.respository.NeighborhoodRepository;

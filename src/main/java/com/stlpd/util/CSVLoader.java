@@ -24,7 +24,7 @@ public class CSVLoader {
         this.callRepository = callRepository;
         this.incidentRepository = incidentRepository;
 
-        // loadCSVCallsData();
+        loadCSVCallsData();
 
     }
 

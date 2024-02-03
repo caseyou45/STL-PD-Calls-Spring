@@ -19,11 +19,8 @@ public class HomeController {
 
     private final CombinedService combinedService;
 
-    private final NeighborhoodMap neighborhoodMap;
-
     public HomeController(CombinedService combinedService) {
         this.combinedService = combinedService;
-        neighborhoodMap = new NeighborhoodMap();
     }
 
     @GetMapping("/")
@@ -41,6 +38,7 @@ public class HomeController {
 
         List<DisplayDTO> items = new ArrayList<>();
 
+        // Create DTO from query for convenience
         QueryDTO query = new QueryDTO(
                 focusID, source,
                 offense, location, neighborhood, startDate, endDate, sortDirection, sortMethod);
