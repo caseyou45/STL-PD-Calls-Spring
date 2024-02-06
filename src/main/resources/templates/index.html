@@ -196,6 +196,9 @@
     </main>
 
     <script>
+      function updateParamsWithPopUp(name, value) {
+        updateParams({ name: name, value: value });
+      }
       function updateParams(element) {
         var name = element.name;
         var value = element.value;
@@ -264,8 +267,8 @@
             popUpText += "Time: " + data[i].displayTime + '<br>';
            }
 
-           popUpText += "Location: " + data[i].location + '<br>' +
-                    "Offense: " + data[i].offense + '<br>';
+             popUpText += "Location: <a href='#' onclick='updateParams({ name: \"location\", value: \"" + data[i].location + "\" }); return false;'>" + data[i].location + '</a><br>' +
+            "Offense: <a href='#' onclick='updateParams({ name: \"offense\", value: \"" + data[i].offense + "\" }); return false;'>" + data[i].offense + '</a><br>';
 
           if (!isNaN(latitude) && !isNaN(longitude)) {
               L.marker([latitude, longitude]).bindPopup(popUpText).addTo(map)

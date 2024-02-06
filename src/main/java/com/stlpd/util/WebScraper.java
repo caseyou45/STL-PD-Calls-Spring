@@ -9,6 +9,7 @@ import org.jsoup.select.Elements;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 import com.stlpd.respository.CallRepository;
@@ -29,7 +30,6 @@ public class WebScraper {
             String blogUrl = "https://www.slmpd.org/cfs.aspx";
             Document doc = Jsoup.connect(blogUrl).get();
             Elements trs = doc.select("tr");
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
             for (Element el : trs) {
                 String callDateTimeString = el.select("td").get(0).text();
@@ -41,7 +41,7 @@ public class WebScraper {
 
                 if (!existingCall.isPresent()) {
                     Call call = new Call();
-                    LocalDateTime localDateTime = LocalDateTime.parse(callDateTimeString, formatter);
+                    LocalDateTime localDateTime = parseDateTime(callDateTimeString);
                     call.setDatetime(localDateTime);
                     call.setEventID(callIDString);
                     call.setLocation(callLocationString);
@@ -53,6 +53,22 @@ public class WebScraper {
             }
         } catch (Exception e) {
             System.out.println("Web " + e.getMessage());
+        }
+    }
+
+    private LocalDateTime parseDateTime(String dateTimeString) {
+        String formatTwoHour = "yyyy-MM-dd HH:mm:ss";
+        String formatOneHour = "yyyy-MM-dd H:mm:ss";
+
+        try {
+            return LocalDateTime.parse(dateTimeString, DateTimeFormatter.ofPattern(formatTwoHour));
+        } catch (DateTimeParseException e1) {
+            try {
+                return LocalDateTime.parse(dateTimeString, DateTimeFormatter.ofPattern(formatOneHour));
+            } catch (DateTimeParseException e2) {
+                System.out.println("Failed to parse date-time string: " + dateTimeString);
+                return null;
+            }
         }
     }
 }
